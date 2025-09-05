@@ -12,28 +12,20 @@ class Vars:
     API_ID = int(os.environ.get("API_ID", "0"))
     API_HASH = os.environ.get("API_HASH", "")
     BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
-    
     LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "0"))
     UPDATE_CHANNEL = int(os.environ.get("UPDATE_CHANNEL", "0"))
-    
     DB_URL = os.environ.get("DB_URL", "")
     DB_NAME = os.environ.get("DB_NAME", "Manhwadb")
-    
     PORT = int(os.environ.get("PORT", "8080"))
-    
-    # multiple admins: "12345,67890"
     ADMINS = list(map(int, os.environ.get("ADMINS", "").split(","))) if os.environ.get("ADMINS") else []
-    
-    IS_PRIVATE = os.environ.get("IS_PRIVATE", None)  # "True" or None
+    IS_PRIVATE = os.environ.get("IS_PRIVATE", None)
     CONSTANT_DUMP_CHANNEL = os.environ.get("CONSTANT_DUMP_CHANNEL", None)
-    WEBS_HOST = os.environ.get("WEBS_HOST", None)  # e.g., "render" or "koyeb"
-    
+    WEBS_HOST = os.environ.get("WEBS_HOST", None)
     FORCE_SUB_CHANNEL = os.environ.get("FORCE_SUB_CHANNEL", "")
-    
     SHORTENER = os.environ.get("SHORTENER", None)
-    SHORTENER_API = os.environ.get("SHORTENER_API", "")  # put {} for url, ex: api?url={}
+    SHORTENER_API = os.environ.get("SHORTENER_API", "")
+    DURATION = int(os.environ.get("DURATION", "20"))
     
-    DURATION = int(os.environ.get("DURATION", "20"))  # hours
   PICS = (
     "https://ik.imagekit.io/jbxs2z512/hd-anime-prr1y1k5gqxfcgpv.jpg?updatedAt=1748487947183",
     "https://ik.imagekit.io/jbxs2z512/naruto_GxcPgSeOy.jpg?updatedAt=1748486799631",
