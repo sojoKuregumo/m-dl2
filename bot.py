@@ -26,6 +26,8 @@ class Vars:
     SHORTENER_API = os.environ.get("SHORTENER_API", "")
     DURATION = int(os.environ.get("DURATION", "20"))
 
+    PING = time()
+
     # ✅ plugins added back
     plugins = dict(root="TG")
 
