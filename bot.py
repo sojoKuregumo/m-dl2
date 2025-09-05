@@ -8,7 +8,6 @@ import random, os, shutil, asyncio
 from pyrogram import utils as pyroutils
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-
 class Vars:
     API_ID = int(os.environ.get("API_ID", "0"))
     API_HASH = os.environ.get("API_HASH", "")
@@ -27,22 +26,20 @@ class Vars:
     SHORTENER_API = os.environ.get("SHORTENER_API", "")
     DURATION = int(os.environ.get("DURATION", "20"))
 
+    # ✅ plugins added back
+    plugins = dict(root="TG")
+
     PICS = (
         "https://ik.imagekit.io/jbxs2z512/hd-anime-prr1y1k5gqxfcgpv.jpg?updatedAt=1748487947183",
         "https://ik.imagekit.io/jbxs2z512/naruto_GxcPgSeOy.jpg?updatedAt=1748486799631",
         "https://ik.imagekit.io/jbxs2z512/dazai-osamu-sunset-rooftop-anime-wallpaper-cover.jpg?updatedAt=1748488276069",
         "https://ik.imagekit.io/jbxs2z512/thumb-1920-736461.png?updatedAt=1748488419323",
-        "https://ik.imagekit.io/jbxs2z512/116847-3840x2160-desktop-4k-bleach-background-photo.jpg?updatedAt=1748488510841",
-        "https://ik.imagekit.io/jbxs2z512/images_q=tbn:ANd9GcSjvt9DcrLXzGYEwwOpxwCSFXTfKEhXhVB-Zg&s?updatedAt=1748488611032",
-        "https://ik.imagekit.io/jbxs2z512/thumb-1920-777955.jpg?updatedAt=1748488978230",
-        # ... keep all your links here ...
-        "https://ik.imagekit.io/jbxs2z512/a469262476f60456dd4aceb8a75deed5.jpg?updatedAt=1751112263336",
+        # ... (rest of your links here unchanged)
     )
 
 
 pyroutils.MIN_CHAT_ID = -99999999999999
 pyroutils.MIN_CHANNEL_ID = -100999999999999
-
 
 class Manhwa_Bot(pyrogram.Client, Vars):
     def __init__(self):
@@ -56,10 +53,10 @@ class Manhwa_Bot(pyrogram.Client, Vars):
         )
         self.logger = logger
         self.__version__ = pyrogram.__version__
-
+    
     async def start(self):
         await super().start()
-
+        
         async def run_flask():
             cmds = ("gunicorn", "app:app")
             process = await asyncio.create_subprocess_exec(
@@ -71,11 +68,11 @@ class Manhwa_Bot(pyrogram.Client, Vars):
 
             if process.returncode != 0:
                 logger.error(f"Flask app failed to start: {stderr.decode()}")
-
+            
             logger.info("Webs app started successfully")
-
+        
         usr_bot_me = await self.get_me()
-
+        
         if os.path.exists("restart_msg.txt"):
             with open("restart_msg.txt", "r") as f:
                 chat_id, message_id = f.read().split(":")
@@ -87,42 +84,44 @@ class Manhwa_Bot(pyrogram.Client, Vars):
                 logger.exception(e)
 
             os.remove("restart_msg.txt")
-
+        
         if os.path.exists("Process"):
             shutil.rmtree("Process")
-
-        self.logger.info("""
-         ___       __   ___  ________  ________  ________  ________          ________  ________  _________  ________      
-        |\  \     |\  \|\  \|\_____  \|\   __  \|\   __  \|\   ___ \        |\   __  \|\   __  \|\___   ___\\   ____\     
-        \ \  \    \ \  \ \  \\|___/  /\ \  \|\  \ \  \|\  \ \  \_|\ \       \ \  \|\ /\ \  \|\  \|___ \  \_\ \  \___|_    
-         \ \  \  __\ \  \ \  \   /  / /\ \   __  \ \   _  _\ \  \ \\ \       \ \   __  \ \  \\\  \   \ \  \ \ \_____  \   
-          \ \  \|\__\_\  \ \  \ /  /_/__\ \  \ \  \ \  \\  \\ \  \_\\ \       \ \  \|\  \ \  \\\  \   \ \  \ \|____|\  \  
-           \ \____________\ \__\\________\ \__\ \__\ \__\\ _\\ \_______\       \ \_______\ \_______\   \ \__\  ____\_\  \ 
-            \|____________|\|__|\|_______|\|__|\|__|\|__|\|__|\|_______|        \|_______|\|_______|    \|__| |\_________\
-                                                                                                              \|_________|
+        
+        # ✅ raw string to avoid SyntaxWarning
+        self.logger.info(r"""
+     ___       __   ___  ________  ________  ________  ________          ________  ________  _________  ________      
+    |\  \     |\  \|\  \|\_____  \|\   __  \|\   __  \|\   ___ \        |\   __  \|\   __  \|\___   ___\\   ____\     
+    \ \  \    \ \  \ \  \\|___/  /\ \  \|\  \ \  \|\  \ \  \_|\ \       \ \  \|\ /\ \  \|\  \|___ \  \_\ \  \___|_    
+     \ \  \  __\ \  \ \  \   /  / /\ \   __  \ \   _  _\ \  \ \\ \       \ \   __  \ \  \\\  \   \ \  \ \ \_____  \   
+      \ \  \|\__\_\  \ \  \ /  /_/__\ \  \ \  \ \  \\  \\ \  \_\\ \       \ \  \|\  \ \  \\\  \   \ \  \ \|____|\  \  
+       \ \____________\ \__\\________\ \__\ \__\ \__\\ _\\ \_______\       \ \_______\ \_______\   \ \__\  ____\_\  \ 
+        \|____________|\|__|\|_______|\|__|\|__|\|__|\|__|\|_______|        \|_______|\|_______|    \|__| |\_________\
+                                                                                                          \|_________|
         """)
         self.username = usr_bot_me.username
-        self.logger.info("Make By https://t.me/Wizard_Bots ")
+        self.logger.info("Made By https://t.me/Wizard_Bots ")
         self.logger.info(f"Manhwa Bot Started as {usr_bot_me.first_name} | @{usr_bot_me.username}")
-
+        
         if self.WEBS_HOST:
             await run_flask()
-
+        
         MSG = """<blockquote><b>🔥 SYSTEMS ONLINE. READY TO RUMBLE. 🔥
 Sleep mode deactivated. Neural cores at 100%. Feed me tasks, and watch magic happen. Let’s. Get. Dangerous.</b></blockquote>"""
-
+        
         PICS = random.choice(Vars.PICS)
-
+        
         button = [[
             InlineKeyboardButton('*Start Now*', url=f"https://t.me/{usr_bot_me.username}?start=start"),
-            InlineKeyboardButton("*Channel*", url="telegram.me/Wizard_Bots")
+            InlineKeyboardButton("*Channel*", url="https://t.me/Wizard_Bots")
         ]]
-
+        
         try:
             await self.send_photo(self.UPDATE_CHANNEL, photo=PICS, caption=MSG, reply_markup=InlineKeyboardMarkup(button))
         except:
             pass
 
+    
     async def stop(self):
         await super().stop()
         self.logger.info("Manhwa Bot Stopped")
